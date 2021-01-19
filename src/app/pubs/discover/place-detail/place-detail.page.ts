@@ -28,7 +28,10 @@ export class PlaceDetailPage implements OnInit {
         this.navCtrl.navigateBack('/pubs/tabs/discover');
         return;
       }
-      this.place = this.placesService.getPlace(paramMap.get('placeId'));
+
+      this.placesService.getPlaceAPIObservable(paramMap.get('placeId')).subscribe(data =>
+        this.place = { id: data.id, ...(data.data() as {}) } as Place
+      );
     });
   }
 
