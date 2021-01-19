@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Place } from '../place.model';
 import { PlacesService } from '../places.service';
@@ -10,14 +10,22 @@ import { SegmentChangeEventDetail } from '@ionic/core';
   styleUrls: ['./discover.page.scss'],
 })
 export class DiscoverPage implements OnInit {
-  loadedPlaces: Place[];
-  listedLoadedPlaces: Place[];
+  allPlaces: Place[];
+  selectedPlace: Place;
+  @ViewChild('pageTop') pageTop;
 
   constructor(private _placesService: PlacesService, private menuCtrl: MenuController) { }
 
-  ngOnInit() { //fetch place when loaded; no update for now so fetch 1 time just good enough
-    this.loadedPlaces = this._placesService.places; //get the getter
-    this.listedLoadedPlaces = this.loadedPlaces.slice(1); //sa nu apara prima locatie in lista de scrolat
+  ngOnInit() { 
+    //fetch all places when loaded; no update for now so fetch 1 time just good enough
+    this._placesService.allPlaces.subscribe(data =>
+      {
+        if (data) {
+          this.allPlaces = data;
+          this.selectedPlace = this.allPlaces[0];
+        }
+      }
+    );
   }
 
   onOpenMenu(){
@@ -28,4 +36,8 @@ export class DiscoverPage implements OnInit {
     console.log(event.detail);
   }
 
+  selectPlace(place: Place) {
+    this.selectedPlace = place;
+    this.pageTop.scrollToTop();
+  }
 }
