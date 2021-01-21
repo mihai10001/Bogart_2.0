@@ -31,7 +31,7 @@ export class PlacesService {
     return this.firestore.collection('places').doc(id).get();
   }
 
-  createPlaceAPIObservable(place: Place) {
+  createPlaceAPIPromise(place: Place) {
     // Normalise model for Firebase
     delete place.id;
     place = {...place};
@@ -40,14 +40,15 @@ export class PlacesService {
     return this.firestore.collection('places').add(place);
   }
 
-  updatePlaceAPIObservable(place: Place) {
+  updatePlaceAPIPromise(place: Place) {
     // Normalise model for Firebase
-    delete place.id;
     place = {...place};
     place.openDays = {...place.openDays};
 
-    this.firestore.doc('places/' + place.id).update(place);
+    return this.firestore.doc('places/' + place.id).update(place);
   }
 
-  deletePlace() {}
+  deletePlace(place: Place) {
+    this.firestore.doc('places/' + place.id).delete();
+  }
 }
