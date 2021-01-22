@@ -16,18 +16,13 @@ const routes: Routes = [
       }
     ]
   },
- {
+  {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then( m => m.AuthPageModule)
   },
   {
-    path: 'booking',
-    loadChildren: () => import('./booking/booking.module').then( m => m.BookingPageModule),
-    canLoad: [AuthGuard]
-  },
-  {
-    path: 'calendar',
-    loadChildren: () => import('./calendar/calendar.module').then( m => m.CalendarPageModule),
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then( m => m.AdminModule),
     canLoad: [AuthGuard]
   },
 
