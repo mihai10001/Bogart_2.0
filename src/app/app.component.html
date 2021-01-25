@@ -13,11 +13,11 @@
         <ion-menu-toggle menu="m1">
         <ion-item lines = "none" routerLink="/pubs/tabs/discover">
           <ion-icon name = "search-outline" slot="start"></ion-icon>
-          <ion-label>Descoperă</ion-label>
+          <ion-label>Descoperă locații</ion-label>
         </ion-item>
       </ion-menu-toggle>
 
-      <ion-menu-toggle>
+      <!-- <ion-menu-toggle>
         <ion-item lines = "none">
           <ion-icon name = "heart" slot="start"></ion-icon>
           <ion-label>Favorite</ion-label>
@@ -29,14 +29,21 @@
         <ion-icon name = "checkbox-outline" slot="start"></ion-icon>
         <ion-label>Rezervări</ion-label>
         </ion-item>
-      </ion-menu-toggle>
+      </ion-menu-toggle> -->
 
-       <ion-menu-toggle>
+       <!-- <ion-menu-toggle>
         <ion-item lines = "none" routerLink="/calendar">
           <ion-icon name = "calendar-outline" slot="start"></ion-icon>
           <ion-label>Calendar</ion-label>
           </ion-item>
-        </ion-menu-toggle>
+        </ion-menu-toggle> -->
+
+      <ion-menu-toggle>
+        <ion-item lines = "none" routerLink="/admin">
+          <ion-icon name="construct" slot="start"></ion-icon>
+          <ion-label>Admin</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
 
       <ion-menu-toggle>
         <ion-item lines = "none" (click)="onLogout()" button>

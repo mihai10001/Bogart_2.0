@@ -14,10 +14,6 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('./discover/discover.module').then( m => m.DiscoverPageModule)
-          },
-          {
-            path: ':placeId', //dynamic parameter -> different places with diff Id
-            loadChildren: () => import('./discover/place-detail/place-detail.module').then( m => m.PlaceDetailPageModule)
           }
         ]
       },

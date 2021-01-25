@@ -12,7 +12,7 @@
 
   <ion-segment value="all" (ionChange)="onFilterUpdate($event)">  <!--which is checked by default -->
     <ion-segment-button value="all">All places</ion-segment-button>
-    <ion-segment-button value="bookable">Bookable Places</ion-segment-button>
+    <ion-segment-button value="bookable">*Insert smth here*</ion-segment-button>
   </ion-segment>
 
   <ion-grid>
@@ -34,7 +34,7 @@
           </ion-card-content>
 
           <div class="ion-text-center ion-padding-bottom">
-            <ion-button color="primary" [routerLink] = "['/', 'pubs', 'tabs', 'discover', selectedPlace?.id]">
+            <ion-button color="primary" [routerLink] = "['/', 'pubs', 'tabs', 'discover', 'booking', selectedPlace?.id]">
               Rezervă!
             </ion-button>
           </div>
