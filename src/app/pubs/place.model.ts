@@ -12,7 +12,7 @@ export class Place{
         public openDays: OpenDays,
         public defaultTableSize: number,
         public availableGridRows: number,
-        public availableGrodCols: number,
+        public availableGridCols: number,
         public availableSeats: {},
         ){ }
 }
