@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AdminComponent } from './admin.component';
+import { AdminPlacesComponent } from './admin-places.component';
 import { AddEditPlaceComponent } from './add-edit-place/add-edit-place.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AdminComponent
+    component: AdminPlacesComponent
   },
   {
     path: 'add-or-edit',

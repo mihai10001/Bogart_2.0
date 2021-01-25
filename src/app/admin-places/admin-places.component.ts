@@ -4,11 +4,11 @@ import { Place } from '../pubs/place.model';
 import { PlacesService } from '../pubs/places.service';
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss'],
+  selector: 'app-admin-places',
+  templateUrl: './admin-places.component.html',
+  styleUrls: ['./admin-places.component.scss'],
 })
-export class AdminComponent implements OnInit {
+export class AdminPlacesComponent implements OnInit {
 
   allPlaces: Place[];
 
