@@ -37,7 +37,7 @@ private activeLogoutTimer: any;
       }));
   }
 
-  get UserId(){
+  get getUserIdAsObservable(){
     return this._user.asObservable().pipe(map(user => {
       if(user)
       {
@@ -49,6 +49,10 @@ private activeLogoutTimer: any;
         return false;
       }
       }));
+  }
+
+  get getUserId(){
+    return this._user.getValue() ? this._user.getValue().id: '';
   }
 
   constructor(private http: HttpClient ) { }
@@ -91,13 +95,13 @@ private activeLogoutTimer: any;
   }
 
   signup(email: string, password: string) {
-    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.apiKey}`
+    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseConfig.apiKey}`
     , {email: email, password: password, returnSecureToken: true}
     ).pipe(tap(this.setUserData.bind(this)));
   }
 
   login(email: string, password: string){
-    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.apiKey}`
+    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseConfig.apiKey}`
     , {email: email, password: password, returnSecureToken: true}
     ).pipe(tap(this.setUserData.bind(this)));
   }
