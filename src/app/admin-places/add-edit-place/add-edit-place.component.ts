@@ -90,9 +90,9 @@ export class AddEditPlaceComponent implements OnInit, AfterViewInit {
     this.onGridValueChanges();
 
     // This should be separate function !
-    for (var key in thisPlace.availableSeats) {
-      const i = thisPlace.availableSeats[key].i;
-      const j = thisPlace.availableSeats[key].j;
+    for (var seat of thisPlace.availableSeats) {
+      const i = seat['i'];
+      const j = seat['j'];
 
       this.checkboxes
         .filter(checkbox => checkbox.nativeElement.innerHTML[0] === i && checkbox.nativeElement.innerHTML[2] === j)
@@ -128,12 +128,12 @@ export class AddEditPlaceComponent implements OnInit, AfterViewInit {
     if (this.addOrEdit === 'add') {
       this._placesService.createPlaceAPIPromise(this.addEditPlaceForm.value as Place)
         .then(
-          (data) => this.router.navigateByUrl('/admin')
+          (data) => this.router.navigateByUrl('/admin-places')
         );
     } else if (this.addOrEdit === 'edit') {
       this._placesService.updatePlaceAPIPromise(this.addEditPlaceForm.value as Place)
       .then(
-        (data) => this.router.navigateByUrl('/admin')
+        (data) => this.router.navigateByUrl('/admin-places')
       );
     }
   }

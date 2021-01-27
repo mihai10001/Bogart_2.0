@@ -13,6 +13,6 @@ export class Place{
         public defaultTableSize: number,
         public availableGridRows: number,
         public availableGridCols: number,
-        public availableSeats: {},
+        public availableSeats: [],
         ){ }
 }
