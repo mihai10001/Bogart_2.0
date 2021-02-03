@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { AdminPlacesComponent } from './admin-places.component';
 import { AddEditPlaceComponent } from './add-edit-place/add-edit-place.component';
 
-import { AdminComponentRoutingModule } from './admin-routing.module';
+import { AdminPlacesRoutingModule } from './admin-places-routing.module';
 
 
 
@@ -17,8 +17,8 @@ import { AdminComponentRoutingModule } from './admin-routing.module';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    AdminComponentRoutingModule
+    AdminPlacesRoutingModule
   ],
   declarations: [AdminPlacesComponent, AddEditPlaceComponent],
 })
-export class AdminModule { }
+export class AdminPlacesModule { }
