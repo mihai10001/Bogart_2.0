@@ -10,6 +10,7 @@ import { PlacesService } from '../pubs/places.service';
 })
 export class AdminPlacesComponent implements OnInit {
 
+  isLoading: boolean | null = null;
   allPlaces: Place[];
 
   constructor(
@@ -22,6 +23,7 @@ export class AdminPlacesComponent implements OnInit {
   }
 
   getPlaces() {
+    this.isLoading = true;
     let getSubscription = this._placesService.getPlacesAPIObservable();
     getSubscription.subscribe(data => {
       this.allPlaces = data.map(e => {
@@ -30,7 +32,8 @@ export class AdminPlacesComponent implements OnInit {
             ...(e.payload.doc.data() as {})
           } as Place;
         });
-    });
+        this.isLoading = false;
+    }, (error) => this.isLoading = false);
   }
 
   deletePlace(place: Place) {
@@ -59,6 +62,5 @@ export class AdminPlacesComponent implements OnInit {
       .then(actionSheetEl =>{
         actionSheetEl.present();
       });
-    
   }
 }
