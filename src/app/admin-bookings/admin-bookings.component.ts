@@ -13,6 +13,7 @@ import { map } from 'rxjs/operators';
 })
 export class AdminBookingsComponent implements OnInit {
 
+  isLoading: boolean | null = null;
   allBookings: BookingViewDTO[];
   filteredBookings: BookingViewDTO[];
 
@@ -27,6 +28,8 @@ export class AdminBookingsComponent implements OnInit {
   }
 
   getBookings() {
+    this.isLoading = true;
+
     this._bookingsService.getBookingsAPIObservable().subscribe(data =>
       {
         let bookingsRaw = data.map(e => {
@@ -52,8 +55,8 @@ export class AdminBookingsComponent implements OnInit {
           return bookingView;
         });
         this.filteredBookings = this.allBookings;
-      }
-    );
+        this.isLoading = false;
+      }, (error) => this.isLoading = false);
   }
 
   deleteBooking(bookingView: BookingViewDTO) {
@@ -85,13 +88,16 @@ export class AdminBookingsComponent implements OnInit {
   }
 
   filterList(event) {
+    this.isLoading = true;
     this.filteredBookings = this.allBookings;
     const searchTerm = event.target.value;
   
     if (!searchTerm) {
+      this.isLoading = false;
       return;
     }
-  
+
+    this.isLoading = false;
     this.filteredBookings = this.allBookings.filter(booking => {
       if (booking.name && booking.placeTitle && booking.dateISONoTime && searchTerm) {
         return (booking.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) ||
