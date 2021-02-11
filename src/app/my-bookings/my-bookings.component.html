@@ -22,14 +22,14 @@
     </ion-card>
 
     <ion-card *ngIf="myBookings.length !== 0" class="ion-text-center ion-padding">
-      <div>Glisați la dreapta pentru a anula/șterge o rezervare</div>
+      <div>Apăsați pe rezervare sau glisați la dreapta pentru a șterge rezervarea</div>
     </ion-card>
 
     <ion-row *ngIf="myBookings.length !== 0">
       <ion-col size="12" size-sm="8" offset-sm="2">
         <ion-virtual-scroll [items]="myBookings" approxItemHeight="90px">
           <ion-item-sliding *virtualItem="let booking">
-            <ion-item>
+            <ion-item (click)="openDetailedInfo(booking)">
               <ion-thumbnail slot="start">
                 <ion-img [src]="booking?.placeImage"></ion-img>
               </ion-thumbnail>
@@ -42,7 +42,7 @@
             </ion-item>
 
             <ion-item-options side="start">
-              <ion-item-option color="danger" (click)="openWarningModal(booking)">
+              <ion-item-option color="danger" (click)="openWarningModal(booking.id)">
                 <ion-icon name="trash" slot="bottom"></ion-icon>Șterge
               </ion-item-option>
             </ion-item-options>
