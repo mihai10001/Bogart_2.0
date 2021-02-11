@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, ModalController } from '@ionic/angular';
 import { Place } from '../pubs/place.model';
 import { Booking, BookingViewDTO } from '../pubs/booking.model';
 import { BookingService } from '../pubs/booking.service';
 import { PlacesService } from '../pubs/places.service';
 import { map } from 'rxjs/operators';
+import { DetailedBookingInfoComponent } from '../detailed-booking-info/detailed-booking-info.component';
 
 @Component({
   selector: 'app-admin-bookings',
@@ -20,10 +21,13 @@ export class AdminBookingsComponent implements OnInit {
   constructor(
     private _placesService: PlacesService,
     private _bookingsService: BookingService,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    public modalController: ModalController
     ) { }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  ionViewWillEnter() {
     this.getBookings();
   }
 
@@ -45,12 +49,14 @@ export class AdminBookingsComponent implements OnInit {
             map(place => place.data() as Place)
           )
           .subscribe( place => {
+            bookingView.placeId = place.id;
             bookingView.placeTitle = place.title;
             bookingView.placeImage = place.imageUrl;
           });
           bookingView.id = booking.id;
           bookingView.name = booking.name;
           bookingView.dateISONoTime = booking.dateISONoTime;
+          bookingView.reservedSeats = booking.reservedSeats;
           bookingView.nrOfReservedSeats = booking.reservedSeats.length; 
           return bookingView;
         });
@@ -59,11 +65,11 @@ export class AdminBookingsComponent implements OnInit {
       }, (error) => this.isLoading = false);
   }
 
-  deleteBooking(bookingView: BookingViewDTO) {
-    this._bookingsService.deleteBooking(bookingView.id);
+  deleteBooking(bookingViewId: string) {
+    this._bookingsService.deleteBooking(bookingViewId);
   }
 
-  openWarningModal(bookingView: BookingViewDTO){
+  openWarningModal(bookingViewId: string){
     this.actionSheetCtrl
       .create({
         header: 'Sunteți sigur că doriți să ștergeți rezervarea?',
@@ -76,7 +82,7 @@ export class AdminBookingsComponent implements OnInit {
           {
             text: 'Da! Doresc să șterg rezervarea.',
             handler: () => {
-              this.deleteBooking(bookingView);
+              this.deleteBooking(bookingViewId);
             },
             icon: 'trash',
           }
@@ -104,6 +110,23 @@ export class AdminBookingsComponent implements OnInit {
           (booking.placeTitle.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) || 
           (booking.dateISONoTime.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1);
       }
+    });
+  }
+
+  openDetailedInfo(bookingView: BookingViewDTO) {
+    this.modalController.create({
+      component: DetailedBookingInfoComponent,
+      cssClass: 'my-custom-booking-modal-css',
+      backdropDismiss: true,
+      componentProps: {
+        'bookingView': bookingView,
+      }
+    }).then(modal => {
+      modal.present();
+      modal.onWillDismiss().then((result) => {
+        if (result.data?.delete)
+          this.openWarningModal(result.data?.bookingViewId);
+      });
     });
   }
 }
