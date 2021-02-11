@@ -18,8 +18,10 @@ export class BookingViewDTO {
         public id: string,
         public name: string,
         public dateISONoTime: string,
+        public placeId: string,
         public placeTitle: string,
         public placeImage: string,
+        public reservedSeats: [],
         public nrOfReservedSeats: number,
     ){ }
 }
