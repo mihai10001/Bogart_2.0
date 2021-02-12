@@ -18,7 +18,9 @@ export class AdminPlacesComponent implements OnInit {
     private actionSheetCtrl: ActionSheetController
     ) { }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  ionViewWillEnter() {
     this.getPlaces();
   }
 
