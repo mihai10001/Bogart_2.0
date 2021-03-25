@@ -1,61 +1,74 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-     <ion-menu-button menu="m1"></ion-menu-button> <!--take the main menu and open it-->
-     <!--<ion-button (click)="onOpenMenu()">Open</ion-button>-->
+     <ion-menu-button menu="m1"></ion-menu-button>
     </ion-buttons>
     <ion-title>Descoperă locații</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content #pageTop class="ion-padding">
+<ion-content>
+  <!-- <div class="ion-padding">
+    <ion-segment value="hideMoreInfo" (ionChange)="onMoreInfoChange($event)">  
+      <ion-segment-button value="hideMoreInfo">...</ion-segment-button>
+      <ion-segment-button value="showMoreInfo">Află mai multe</ion-segment-button>
+    </ion-segment>
+  </div> -->
+  <ion-card (click)="toggleMoreInfoVisibility()" class="ion-text-center ion-padding">
+    <ion-text color="primary">{{ this.isMoreInfoVisible ? 'Ascunde mai multe' : 'Află mai multe' }}</ion-text>
+  </ion-card>
 
-  <ion-segment value="all" (ionChange)="onFilterUpdate($event)">  <!--which is checked by default -->
-    <ion-segment-button value="all">All places</ion-segment-button>
-    <ion-segment-button value="bookable">*Insert smth here*</ion-segment-button>
-  </ion-segment>
+  <ion-card *ngIf="isMoreInfoVisible" class="ion-text-center ion-padding">
+    <span style="position: absolute; top: 5px; right: 10px">
+      <ion-icon size="small" name="close" color="primary" (click)="toggleInfoVisibility()"></ion-icon>
+    </span>
+    Acesta este un proiect de diplomă, realizat în cadrul Universității Politehnică Timișoara.
+    Proiectul trebuie tratat ca un prototip de aplicație pentru rezervarea online a meselor din restaurantele orașului Timișoara.
+    <!-- Conține metode de gestionare și management al locațiilor, al rezervărilor, și multe altele. -->
+  </ion-card>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12" size-sm="8" offset-sm="2">
-        <ion-card > <!--entry point for more detailed information-->
-          <ion-card-header>
-            <ion-card-title>
-              {{ selectedPlace?.title}}
-            </ion-card-title>
-          </ion-card-header>
+  <div *ngIf="isLoading === true" class="ion-text-center">
+    <ion-spinner name="crescent" color="secondary" style="transform: scale(3); padding-top: 300px"></ion-spinner>
+  </div>
 
-          <ion-img [src] = "selectedPlace?.imageUrl"></ion-img>
+  <ion-grid *ngIf="isLoading === false">
+    <ion-card *ngIf="allPlaces.length === 0" class="ion-text-center ion-padding">
+      <h4 style="padding-bottom: 5px">Nu există intrări!</h4>
+      <ion-button size="small" routerLink="/pubs/tabs/discover" color="primary">
+        <ion-icon name="home"></ion-icon>
+      </ion-button>
+    </ion-card>
 
-          <ion-card-content>
-            <ion-text color="danger" class="ion-text-center">{{selectedPlace?.description}}</ion-text>
-            <br>
-            <p style="white-space: pre-line">{{selectedPlace?.schedule}}</p>
-          </ion-card-content>
-
-          <div class="ion-text-center ion-padding-bottom">
-            <ion-button color="primary" [routerLink] = "['/', 'pubs', 'tabs', 'discover', 'booking', selectedPlace?.id]">
-              Rezervă!
-            </ion-button>
-          </div>
-
-        </ion-card>
-      </ion-col>
-    </ion-row>
-
+    <ion-card *ngIf="allPlaces.length !== 0" class="ion-text-center ion-padding">
+      <div>Apăsați pe intrare sau glisați la stânga pentru mai multe acțiuni</div>
+    </ion-card>
+  
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2">
         <ion-virtual-scroll [items]="allPlaces" approxItemHeight="90px"> <!--approx item height to know how much to scroll and when to prepare to render -->
-          <ion-item *virtualItem="let place" (click)="selectPlace(place)">
-            <ion-thumbnail slot="start">
-              <ion-img [src]="place?.imageUrl"></ion-img>
-            </ion-thumbnail>
-            <ion-label> <!--wrapper for the text nest to square image-->
-              <h2>{{place?.title}}</h2>
-              <p>{{place?.description}}</p>
-              <p style="white-space: pre-line">{{place?.schedule}}</p>
-            </ion-label>
-          </ion-item>
+          <ion-item-sliding *virtualItem="let place">
+            <ion-item>
+              <ion-thumbnail slot="start">
+                <ion-img [src]="place?.imageUrl"></ion-img>
+              </ion-thumbnail>
+              <ion-label> <!--wrapper for the text nest to square image-->
+                <h2>{{place?.title}}</h2>
+                <p>{{place?.description}}</p>
+                <p style="white-space: pre-line">{{place?.schedule}}</p>
+              </ion-label>
+            </ion-item>
+
+            <ion-item-options side="end">
+
+              <ion-item-option color="primary" (click)="presentAlert(place.title, place.id)">
+                <ion-icon name="heart" slot="bottom"></ion-icon>Favorite
+              </ion-item-option>
+
+              <ion-item-option color="success" [routerLink]="['/', 'pubs', 'tabs', 'discover', 'booking', place?.id]">
+                <ion-icon name="add-circle" slot="bottom"></ion-icon>Rezervă
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
         </ion-virtual-scroll>
       </ion-col>
     </ion-row>
