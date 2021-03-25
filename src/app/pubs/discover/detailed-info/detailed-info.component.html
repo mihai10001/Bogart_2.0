@@ -1,0 +1,20 @@
+<ion-img [src]="nonCachedImage" style="max-height: 50%"></ion-img>
+
+<ion-text color="primary" class="ion-text-center"><h2>{{ selectedPlace?.title }}</h2></ion-text>
+<ion-text color="secondary" class="ion-text-center ion-padding">{{ selectedPlace?.description }}</ion-text>
+<ion-text color="dark" class="ion-text-center" style="white-space: pre-line">{{ selectedPlace?.schedule }}</ion-text>
+
+
+<div class="ion-text-center ion-padding-bottom">
+  <ion-button color="success" expand="block" class="ion-margin" (click)="onReserveButton(selectedPlace.id)">
+    Rezervă<ion-icon name="add-circle" style="margin-left: 3px"></ion-icon>
+  </ion-button>
+
+  <ion-button color="primary" (click)="onFavouriteButton(selectedPlace.title, selectedPlace.id)">
+    Favorite<ion-icon name="heart" style="margin-left: 3px"></ion-icon>
+  </ion-button>
+
+  <ion-button color="secondary" (click)="onReviewsButton(selectedPlace.id)">
+    Recenzii<ion-icon name="star" style="margin-left: 3px"></ion-icon>
+  </ion-button>
+</div>
