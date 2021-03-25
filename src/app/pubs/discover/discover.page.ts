@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
+import { DetailedInfoComponent } from './detailed-info/detailed-info.component';
 import { Place } from '../place.model';
 import { PlacesService } from '../places.service';
 // import { SegmentChangeEventDetail } from '@ionic/core';
@@ -87,12 +88,23 @@ export class DiscoverPage implements OnInit {
       });
   }
 
-  onOpenMenu(){
-    this.menuCtrl.toggle();
-  }
-
-  onFilterUpdate(event: CustomEvent<SegmentChangeEventDetail>){
-    console.log(event.detail);
+  openDetailedInfo(selectedPlace: Place) {
+    this.modalController.create({
+      component: DetailedInfoComponent,
+      cssClass: 'my-custom-modal-css',
+      backdropDismiss: true,
+      componentProps: {
+        'selectedPlace': selectedPlace,
+      }
+    }).then(modal => {
+      modal.present();
+      modal.onWillDismiss().then((result) => {
+        if (result.data?.redirect)
+          this.router.navigateByUrl(result.data.route);
+        else if (result.data?.favourite)
+          this.presentAlert(result.data.selectedPlaceTitle, result.data.selectedPlaceId)
+      });
+    });
   }
 
   toggleMoreInfoVisibility() {
